@@ -58,7 +58,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return view('pages.projects.edit', compact('project'));
     }
 
     /**
@@ -66,7 +66,15 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $val_data = $request->validated();
+
+        $slug = Project::generateSlug($request->name);
+
+        $val_data['slug'] = $slug;
+
+        $project->update($val_data);
+
+        return redirect()->route('dashboard.projects.index');
     }
 
     /**
