@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -31,21 +32,17 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'description' => 'nullable',
-            'slug' => 'required',
-        ]);
+        $val_data = $request->validated();
 
-        $formData = $request->all();
+        $slug = Project::generateSlug($request->name);
 
-        $formData['slug'] = Str::slug($formData['name']);
+        $val_data['slug'] = $slug;
 
-        $newProject = new Project();
-        $newProject->fill($formData);
-        $newProject->save();
+        // dd($val_data);
+
+        $newProject = Project::create($val_data);
         
-        return redirect()->route('pages.projects.index');
+        return redirect()->route('dashboard.projects.index');
     }
 
     /**
