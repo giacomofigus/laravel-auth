@@ -23,7 +23,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.projects.create');
     }
 
     /**
@@ -31,7 +31,21 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'nullable',
+            'slug' => 'required',
+        ]);
+
+        $formData = $request->all();
+
+        $formData['slug'] = Str::slug($formData['name']);
+
+        $newProject = new Project();
+        $newProject->fill($formData);
+        $newProject->save();
+        
+        return redirect()->route('pages.projects.index');
     }
 
     /**

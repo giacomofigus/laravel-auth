@@ -4,6 +4,15 @@
     <main class="container">
         <h1 class="pt-3">Lista dei progetti:</h1>
 
+        {{-- Create Project --}}
+        <a 
+        href="{{ route('dashboard.projects.create') }}"
+        class="btn btn-primary"
+        role="button"
+        >
+        Crea
+        </a>
+
         <div
             class="table-responsive py-3"
         >
