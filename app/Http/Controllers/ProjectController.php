@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -35,10 +36,13 @@ class ProjectController extends Controller
         $val_data = $request->validated();
 
         $slug = Project::generateSlug($request->name);
-
         $val_data['slug'] = $slug;
 
-        // dd($val_data);
+        if($request->hasFile('cover_image')){
+            $img_path = Storage::disk('public')->put('project_images', $request->cover_image);
+
+            $val_data['cover_image'] = $img_path;
+        }
 
         $newProject = Project::create($val_data);
         
@@ -50,7 +54,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        return view('pages.projects.show', compact('project'));
     }
 
     /**
@@ -69,8 +73,14 @@ class ProjectController extends Controller
         $val_data = $request->validated();
 
         $slug = Project::generateSlug($request->name);
-
         $val_data['slug'] = $slug;
+
+        //Se è presente il file image all'interno della request
+        if($request->hasFile('cover_image')){
+            $img_path = Storage::disk('public')->put('project_images', $request->cover_image);
+
+            $val_data['cover_image'] = $img_path;
+        }
 
         $project->update($val_data);
 

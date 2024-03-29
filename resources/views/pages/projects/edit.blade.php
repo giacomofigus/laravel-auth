@@ -5,7 +5,11 @@
     <div class=" container d-flex justify-content-center">
         <div class="mt-5 border w-50 p-5">
             <h1>Modifica il progetto</h1>
-            <form action="{{ route('dashboard.projects.update', $project->slug)  }}" method="POST">
+            <form 
+            action="{{ route('dashboard.projects.update', $project->slug)  }}" 
+            method="POST"
+            enctype="multipart/form-data"
+            >
 
                 @csrf
                 @method('put')
@@ -20,6 +24,11 @@
                     <textarea name="description" id="description" cols="30" rows="10" class="form-control">{{ old('description') ?? $project->description }}</textarea>
                 </div>
 
+                
+                <div class="mt-3">
+                    <label for="cover_image" class="form-label">Inserisci file</label>
+                    <input type="file" name="cover_image" id="cover_image" class="form-control">
+                </div>
 
                 <button type="submit" class="btn btn-primary mt-4">
                     Modifica

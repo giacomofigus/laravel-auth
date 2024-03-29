@@ -24,15 +24,21 @@
                         <th scope="col">Name</th>
                         <th scope="col">Description</th>
                         <th scope="col">Slug</th>
+                        <th scope="col">Cover Images</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($projects as $item)
                         <tr>
-                            <td>{{ $item->name }}</td>
+                            <td>
+                                <a href="{{ route('dashboard.projects.show', $item->slug) }}">
+                                    {{ $item->name }}
+                                </a>
+                            </td>
                             <td>{{ $item->description }}</td>
                             <td>{{ $item->slug }}</td>
+                            <td>{{ $item->cover_image }}</td>
                             <td >
                                 {{-- Delete --}}
                                 <form action="{{ route('dashboard.projects.destroy', $item->slug ) }}" method="post">
